@@ -1,0 +1,24 @@
+@import '../../common/styles/colors';
+@import '../../common/styles/font-sizes';
+
+.content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 7.5rem 1rem;
+
+  &Img {
+    display: flex;
+    width: 100%;
+  }
+
+  &Text {
+    color: $grey-900;
+    font-size: $font-size-24;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 29px;
+    margin: 2rem 0;
+    text-align: center;
+  }
+}

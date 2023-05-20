@@ -1,0 +1,62 @@
+@import "./src/common/styles/colors";
+@import "./src/common/styles/breackpoints";
+
+.header {
+  align-items: center;
+  background-color: $white;
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: 3fr 6fr 3fr;
+  justify-content: space-between;
+  max-width: $xl-size;
+  min-height: 5.24rem;
+  width: 100%;
+
+  &Wrapper {
+    background-color: $white;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &Logo {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 3.5rem;
+
+    & svg {
+      width: 100%;
+    }
+  }
+
+  &Links {
+    ul {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 3.75rem;
+      justify-content: center;
+    }
+  }
+}
+
+.nav {
+  &Link {
+    transition: all 0.05s ease-in-out;
+
+    &:hover {
+      color: $blue-600;
+      transition: all 0.15s ease-in-out;
+    }
+
+    &:active {
+      color: $blue-500-main;
+      transition: all 0.05s ease-in-out;
+    }
+
+    &[aria-current] {
+      color: $blue-500-main;
+    }
+  }
+}
