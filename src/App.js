@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={'/'} element={<MainPage />} />
-        <Route path={SEARCH_VACANCIES} element={<MainPage />} />
+        <Route path={SEARCH_VACANCIES} element={<Vacancies />} />
         <Route path={VACANCIES} element={<Vacancies />} />
         <Route path={FAVORITES} element={<FavoritesVacancies />} />
         <Route path="*" element={<Page404 />} />

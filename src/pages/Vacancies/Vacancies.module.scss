@@ -1,0 +1,17 @@
+.vacancies {
+  display: flex;
+  max-width: 1116px;
+  gap: 1.75rem;
+  padding: 2.5rem 0;
+
+  &Content {
+    width: 100%;
+  }
+
+  &List {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+}
