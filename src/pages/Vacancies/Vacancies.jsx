@@ -1,79 +1,121 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  Dialog,
+  Group,
+  TextInput,
+  Button,
+  Pagination,
+  Text
+} from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
 import { Header } from '../../common/components/Header';
-import { Button, Pagination } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { PATH } from '../../common/constants/routes.dictionary';
 import { Wrapper } from '../../common/components/Wrapper';
-import { TextInput } from '@mantine/core';
 import { VACANCIES_DICTIONARY } from './Vacancies.dictionary';
-import { IconSearch } from '@tabler/icons-react';
 import { VacancyCard } from '../../common/components/VacancyCard';
 import s from './Vacancies.module.scss';
 import { VacanciesFilter } from './components/VacanciesFilter';
+import { getToken } from '../../common/api/auth';
+import { getVacancies } from '../../common/api/vacancies';
+import { getCatalogues } from '../../common/api/catalogues';
 
-const mock_cards = [
-  {
-    id: 1,
-    payment_from: 70000,
-    payment_to: 200000,
-    profession: 'Менеджер-дизайнер',
-    work: '1. Подготовка, согласование с Комитетами и службами...',
-    currency: 'rub',
-    type_of_work: {
-      id: 6,
-      title: "Полный рабочий день",
-    },
-    town: {
-      id: 14,
-      title: "Новый уренгой",
-      declension: "в Новом Уренгое",
-      genitive: "Нового Уренгоя"
-    },
-  },
-  {
-    id: 2,
-    payment_from: 0,
-    payment_to: 0,
-    profession: 'Ведущий графический дизайнер НЕ УДАЛЕННО',
-    work: '2. Подготовка, согласование с Комитетами и службами...',
-    currency: 'rub',
-    type_of_work: {
-      id: 6,
-      title: "Полный рабочий день",
-    },
-    town: {
-      id: 14,
-      title: "Санкт-Петербург",
-      declension: "в Санкт-Петербурге",
-      genitive: "Санкт-Петербурга"
-    },
-  },
-];
+const { SEARCH, ERROR, OK } = VACANCIES_DICTIONARY;
+const ITEMS_PER_PAGE = 20;
 
-const { SEARCH } = VACANCIES_DICTIONARY;
+const getPagesCount = (total, itemPerPage) => {
+  const pages = Math.ceil(total / itemPerPage);
 
-const vacancies = mock_cards.map((item) => {
-  return (
-    <Link to={`${PATH.VACANCIES}/${item.id}`} key={item.id}>
-      <VacancyCard
-        profession={item.profession}
-        payment_from={item.payment_from}
-        currency={item.currency}
-        town={item.town}
-        type_of_work={item.type_of_work}
-      />
-    </Link>
-  );
-});
+  if (!pages) {
+    return 1;
+  }
+
+  return pages > 26 ? 26 : pages;
+};
 
 export const Vacancies = () => {
+  const [apiError, setApiError] = useState('');
+  const [vacancies, setVacancies] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [catalogues, setCatalogues] = useState([]);
+  const [filter, setFilter] = useState({
+    keyword: '',
+    catalogues: null,
+    paymentFrom: 0,
+    paymentTo: 0,
+  });
+
+  const vacanciesList = vacancies.map((item) => {
+    return (
+      <Link to={`${PATH.VACANCIES}/${item.id}`} key={item.id}>
+        <VacancyCard
+          profession={item.profession}
+          payment_from={item.payment_from}
+          currency={item.currency}
+          town={item.town}
+          type_of_work={item.type_of_work}
+        />
+      </Link>
+    );
+  });
+
+  useEffect(() => {
+    async function fetchToken() {
+      try {
+        const res = await getToken();
+        const { data } = res;
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+      } catch (e) {
+
+        setApiError(e.message);
+      }
+    }
+
+    async function fetchVacancies() {
+      try {
+        const res = await getVacancies({ page: page - 1, ...filter });
+        setVacancies(res.data.objects);
+        setTotal(res.data.total);
+      } catch (e) {
+
+        setApiError(e.response.data.error.message);
+      }
+      ;
+    }
+
+    async function fetchCatalogues() {
+      try {
+        const res = await getCatalogues();
+        const { data } = res;
+        const industries = data.map((item) => {
+          return { value: item.key, label: item.title };
+        });
+        setCatalogues(industries);
+      } catch (e) {
+
+        setApiError(e.response.data.error.message);
+      }
+    }
+
+    const access_token = localStorage.getItem('access_token');
+
+    if (!access_token) {
+      fetchToken();
+    }
+
+    fetchVacancies();
+    fetchCatalogues();
+  }, [page, filter]);
+
   return (
     <Wrapper>
       <Header />
       <div className={s.vacanciesWrapper}>
         <div className={s.vacancies}>
           <aside>
-            <VacanciesFilter />
+            <VacanciesFilter industries={catalogues} setFilter={setFilter} />
           </aside>
           <div className={s.vacanciesContent}>
             <TextInput
@@ -83,7 +125,7 @@ export const Vacancies = () => {
               rightSection={
                 <Button
                   onClick={() => console.log('Find click')}
-                  styles={{root: { backgroundColor: '#5e96fc' } }}
+                  styles={{ root: { backgroundColor: '#5e96fc' } }}
                   radius="md"
                 >
                   {SEARCH.BUTTON}
@@ -93,14 +135,30 @@ export const Vacancies = () => {
               rightSectionWidth={104}
             />
             <div className={s.vacanciesList}>
-              {vacancies}
+              {vacanciesList}
             </div>
             <div className={s.vacanciesPagination}>
-              <Pagination total={10} />
+              <Pagination
+                total={getPagesCount(total, ITEMS_PER_PAGE)}
+                value={page}
+                onChange={setPage}
+              />
             </div>
           </div>
         </div>
       </div>
+      <Dialog opened={apiError} withCloseButton onClose={() => setApiError('')} size="lg"
+              radius="md">
+        <Text size="sm" mb="xs" weight={500} color={'red'}>
+          {ERROR}
+        </Text>
+        <Text size="sm" mb="xs" weight={500} color={'red'}>
+          {apiError}
+        </Text>
+        <Group align="center" position="center">
+          <Button color="red" onClick={() => setApiError('')}>{OK}</Button>
+        </Group>
+      </Dialog>
     </Wrapper>
   );
 };
