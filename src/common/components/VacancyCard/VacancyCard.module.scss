@@ -16,20 +16,20 @@
 
   &Title {
     color: $blue-500-main;
-    font-weight: 600;
     font-size: $font-size-20;
+    font-weight: 600;
     line-height: 24px;
     margin: 0;
   }
 
   &Payment {
+    align-items: center;
     display: flex;
     gap: 0.75rem;
-    align-items: center;
 
     &Salary {
-      font-weight: 600;
       font-size: $font-size-16;
+      font-weight: 600;
       line-height: 20px;
     }
 
@@ -43,8 +43,8 @@
   }
 
   &Location {
-    display: flex;
     align-items: center;
+    display: flex;
     gap: 0.5rem;
 
     & p {

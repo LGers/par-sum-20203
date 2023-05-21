@@ -1,8 +1,20 @@
 .vacancies {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 7fr;
+
+
   max-width: 1116px;
-  gap: 1.75rem;
-  padding: 2.5rem 0;
+  width: 100%;
+
+  & aside {
+    margin-right: 1.75rem;
+  }
+
+  &Wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 2.5rem 0;
+  }
 
   &Content {
     width: 100%;
@@ -13,5 +25,10 @@
     flex-direction: column;
     gap: 1rem;
     margin: 1rem 0;
+  }
+
+  &Pagination {
+    display: flex;
+    justify-content: center;
   }
 }

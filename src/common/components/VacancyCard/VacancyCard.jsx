@@ -8,7 +8,7 @@ const { PAYMENT_FROM, PAYMENT_FROM_ZERO } = VACANCY_CARD_DICTIONARY;
 
 export const VacancyCard = ({ profession, payment_from, type_of_work, town, currency }) => {
   return (
-    <Card radius="md" className={s.vc}>
+    <Card withBorder radius="md" className={s.vc} padding="xl">
       <h3 className={s.vcTitle}>{profession}</h3>
       <div className={s.vcPayment}>
         <p className={s.vcPaymentSalary}>
