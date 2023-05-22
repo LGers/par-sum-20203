@@ -1,18 +1,12 @@
+@import '../../../common/styles/animation';
 @import '../../../common/styles/colors';
 @import '../../../common/styles/font-sizes';
-@import '../../../common/styles/animation';
 
 .vc {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-
   transition: $transition-down;
-
-  &:hover {
-    box-shadow: 0 0 4px 4px $black-010;
-    transition: $transition-up;
-  }
 
   &Header {
     display: flex;

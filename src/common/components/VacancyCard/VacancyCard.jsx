@@ -7,23 +7,17 @@ import { VACANCY_CARD_DICTIONARY } from './VacancyCard.dictionary';
 
 const { PAYMENT_FROM, PAYMENT_FROM_ZERO } = VACANCY_CARD_DICTIONARY;
 
-export const VacancyCard = ({
-                              id,
-                              profession,
-                              payment_from,
-                              type_of_work,
-                              town,
-                              currency,
-                              isFavorite,
-                              onStarClick
-                            }) => {
-  const vacancy = {
-    id,
+export const VacancyCard = ({ vacancy, isFavorite, onStarClick }) => {
+  const {
     profession,
     payment_from,
     type_of_work,
     town,
     currency,
+  } = vacancy;
+
+  const handleStarClick = (e, vacancy) => {
+    onStarClick && onStarClick(e, vacancy);
   };
 
   return (
@@ -32,7 +26,7 @@ export const VacancyCard = ({
         <h3 className={s.vcTitle}>{profession}</h3>
         <Star
           className={isFavorite ? s.vcStarActive : s.vcStar}
-          onClick={(e) => onStarClick(e, vacancy)}
+          onClick={handleStarClick}
         />
       </div>
       <div className={s.vcPayment}>

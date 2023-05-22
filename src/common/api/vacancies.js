@@ -2,6 +2,7 @@ import { instance } from './instance';
 
 export const URL = {
   vacancies: () => '/vacancies/',
+  vacancy: (id) => `/vacancies/${id}/`,
 };
 
 export const getVacancies = ({
@@ -19,5 +20,11 @@ export const getVacancies = ({
     payment_to,
     catalogues,
     published: 1,
+  }
+});
+
+export const getVacancy = ({ id }) => instance.get(URL.vacancy(id), {
+  params: {
+    'x-secret-key': process.env.REACT_APP_X_SECRET_KEY || '',
   }
 });

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PATH } from '../../constants/routes.dictionary';
 import { VacancyCard } from '../VacancyCard';
+import s from './VacanciesList.module.scss';
 
 export const VacanciesList = ({ vacancies, onStarClick }) => {
 
@@ -34,7 +35,11 @@ export const VacanciesList = ({ vacancies, onStarClick }) => {
 
   const vacanciesList = vacancies.map((item) => {
     return (
-      <Link to={`${PATH.VACANCIES}/${item.id}`} key={item.id}>
+      <Link
+        to={`${PATH.VACANCY}/${item.id}`}
+        key={item.id}
+        className={s.vacanciesListCard}
+      >
         <VacancyCard
           id={item.id}
           profession={item.profession}
@@ -42,6 +47,7 @@ export const VacanciesList = ({ vacancies, onStarClick }) => {
           currency={item.currency}
           town={item.town}
           type_of_work={item.type_of_work}
+          vacancy={item}
           isFavorite={favorites.filter((item2) => item2.id === item.id).length}
           onStarClick={(e) => handleStarClick(e, item)}
         />

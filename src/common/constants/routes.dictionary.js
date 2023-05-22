@@ -3,4 +3,5 @@ export const PATH = {
   VACANCIES: '/vacancies',
   FAVORITES: '/favorites',
   VACANCY: '/vacancy',
+  PAGE_404: '/page404',
 };

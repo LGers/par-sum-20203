@@ -1,0 +1,14 @@
+@import '../../../common/styles/animation';
+@import '../../../common/styles/colors';
+
+.vacanciesList {
+  transition: $transition-down;
+
+  &Card {
+    &:hover {
+      border-radius: 0.5rem;
+      box-shadow: 0 0 4px 4px $black-010;
+      transition: $transition-up;
+    }
+  }
+}
