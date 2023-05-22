@@ -5,7 +5,7 @@
 .vc {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 
   transition: $transition-down;
 
@@ -14,12 +14,52 @@
     transition: $transition-up;
   }
 
+  &Header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
   &Title {
     color: $blue-500-main;
     font-size: $font-size-20;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 1.5rem;
     margin: 0;
+  }
+
+  &Star {
+    &:hover {
+      transform: scale(1.5);
+
+      path {
+        fill: $blue-500-main;
+        stroke: $blue-500-main;
+      }
+    }
+  }
+
+  &StarActive {
+    path {
+      fill: $blue-500-main;
+      stroke: $blue-500-main;
+    }
+
+    &:hover {
+      transform: scale(1.2);
+
+      path {
+        fill: $white;
+        stroke: $blue-500-main;
+      }
+    }
+
+    &:active {
+      path {
+        fill: $blue-500-main;
+        stroke: $blue-500-main;
+      }
+    }
   }
 
   &Payment {

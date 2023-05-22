@@ -1,0 +1,18 @@
+.fv {
+  &Content {
+    margin: 0 auto;
+    max-width: 49rem;
+  }
+
+  &List {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  &Pagination {
+    display: flex;
+    justify-content: center;
+  }
+}

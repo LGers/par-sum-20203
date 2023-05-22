@@ -9,16 +9,14 @@ import {
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { Header } from '../../common/components/Header';
-import { Link } from 'react-router-dom';
-import { PATH } from '../../common/constants/routes.dictionary';
 import { Wrapper } from '../../common/components/Wrapper';
 import { VACANCIES_DICTIONARY } from './Vacancies.dictionary';
-import { VacancyCard } from '../../common/components/VacancyCard';
 import s from './Vacancies.module.scss';
 import { VacanciesFilter } from './components/VacanciesFilter';
 import { getToken } from '../../common/api/auth';
 import { getVacancies } from '../../common/api/vacancies';
 import { getCatalogues } from '../../common/api/catalogues';
+import { VacanciesList } from '../../common/components/VacanciesList';
 
 const { SEARCH, ERROR, OK } = VACANCIES_DICTIONARY;
 const ITEMS_PER_PAGE = 20;
@@ -46,20 +44,6 @@ export const Vacancies = () => {
     paymentTo: 0,
   });
 
-  const vacanciesList = vacancies.map((item) => {
-    return (
-      <Link to={`${PATH.VACANCIES}/${item.id}`} key={item.id}>
-        <VacancyCard
-          profession={item.profession}
-          payment_from={item.payment_from}
-          currency={item.currency}
-          town={item.town}
-          type_of_work={item.type_of_work}
-        />
-      </Link>
-    );
-  });
-
   useEffect(() => {
     async function fetchToken() {
       try {
@@ -79,10 +63,8 @@ export const Vacancies = () => {
         setVacancies(res.data.objects);
         setTotal(res.data.total);
       } catch (e) {
-
         setApiError(e.response.data.error.message);
       }
-      ;
     }
 
     async function fetchCatalogues() {
@@ -94,7 +76,6 @@ export const Vacancies = () => {
         });
         setCatalogues(industries);
       } catch (e) {
-
         setApiError(e.response.data.error.message);
       }
     }
@@ -135,7 +116,7 @@ export const Vacancies = () => {
               rightSectionWidth={104}
             />
             <div className={s.vacanciesList}>
-              {vacanciesList}
+              <VacanciesList vacancies={vacancies} />
             </div>
             <div className={s.vacanciesPagination}>
               <Pagination
