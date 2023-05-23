@@ -68,6 +68,7 @@ export const VacanciesFilter = ({ industries, setFilter, onReset }) => {
               radius="md"
               min={0}
               {...form.getInputProps(PAYMENT_FROM.NAME)}
+              styles={{ rightSection: { margin: '4px 0' } }}
             />
             <NumberInput
               data-elem={'salary-to-input'}
@@ -78,6 +79,7 @@ export const VacanciesFilter = ({ industries, setFilter, onReset }) => {
               radius="md"
               min={0}
               {...form.getInputProps(PAYMENT_TO.NAME)}
+              styles={{ rightSection: { margin: '4px 0' } }}
             />
           </div>
           <Button

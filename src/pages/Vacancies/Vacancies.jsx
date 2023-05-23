@@ -18,9 +18,11 @@ import { getToken } from '../../common/api/auth';
 import { getVacancies } from '../../common/api/vacancies';
 import { getCatalogues } from '../../common/api/catalogues';
 import { VacanciesList } from '../../common/components/VacanciesList';
+import { Loading } from '../../common/components/Loading';
+import { EmptyState } from '../../common/components/EmptyState';
 
 const { SEARCH, ERROR, OK } = VACANCIES_DICTIONARY;
-const ITEMS_PER_PAGE = 20;
+export const ITEMS_PER_PAGE = 4;
 
 const getPagesCount = (total, itemPerPage) => {
   const pages = Math.ceil(total / itemPerPage);
@@ -29,7 +31,7 @@ const getPagesCount = (total, itemPerPage) => {
     return 1;
   }
 
-  return pages > 26 ? 26 : pages;
+  return pages > 125 ? 125 : pages;
 };
 
 export const Vacancies = () => {
@@ -60,7 +62,6 @@ export const Vacancies = () => {
         localStorage.setItem('refresh_token', data.refresh_token);
         return res;
       } catch (e) {
-
         setApiError(e.message);
       }
     }
@@ -73,6 +74,7 @@ export const Vacancies = () => {
         setTotal(res.data.total);
         setIsLoading(false);
       } catch (e) {
+        console.log('error', e);
         setIsLoading(false);
         setApiError(e.response.data.error.message);
       }
@@ -152,11 +154,8 @@ export const Vacancies = () => {
               rightSectionWidth={104}
             />
             <div className={s.vacanciesList}>
-              {isLoading &&
-              <div className={s.vacanciesLoader}>
-                <Loader />
-              </div>
-              }
+              {isLoading && <Loading />}
+              {!vacancies.length && <EmptyState />}
               <VacanciesList vacancies={vacancies} />
             </div>
             <div className={s.vacanciesPagination}>

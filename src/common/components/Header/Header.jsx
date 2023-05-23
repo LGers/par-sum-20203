@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Header.module.scss';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/img/logo-big.svg';
 import { PATH } from '../../constants/routes.dictionary';
 
@@ -23,9 +23,9 @@ export const Header = () => {
   return (
     <div className={s.headerWrapper}>
       <div className={s.header}>
-        <div className={s.headerLogo}>
+        <Link to={PATH.MAIN_ROUTE} className={s.headerLogo}>
           <Logo />
-        </div>
+        </Link>
         <div className={s.headerLinks}>
           <ul>
             {navLinks}

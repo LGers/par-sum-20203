@@ -9,6 +9,7 @@ import { VACANCY_DICTIONARY } from './Vacancy.dictionary';
 import { getToken } from '../../common/api/auth';
 import { getVacancy } from '../../common/api/vacancies';
 import parse from 'html-react-parser';
+import { Loading } from '../../common/components/Loading';
 
 const { ERROR, OK } = VACANCY_DICTIONARY;
 
@@ -25,6 +26,7 @@ export const Vacancy = () => {
     currency: '',
     vacancyRichText: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchToken() {
@@ -40,10 +42,12 @@ export const Vacancy = () => {
 
     async function fetchVacancy() {
       try {
+        setIsLoading(true);
         const res = await getVacancy({ id });
         setVacancy(res.data);
+        setIsLoading(false);
       } catch (e) {
-
+        setIsLoading(false);
         setApiError(e.response.data.error.message);
       }
     }
@@ -73,6 +77,7 @@ export const Vacancy = () => {
   return (
     <Wrapper>
       <Header />
+      {isLoading && <Loading />}
       {vacancy.id &&
       <div className={s.vacancyContent}>
         <VacancyCard

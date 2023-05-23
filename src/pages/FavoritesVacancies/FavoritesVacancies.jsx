@@ -4,6 +4,7 @@ import { Wrapper } from '../../common/components/Wrapper';
 import s from './FavoritesVacancies.module.scss';
 import { Pagination } from '@mantine/core';
 import { VacanciesList } from '../../common/components/VacanciesList';
+import { EmptyState } from '../../common/components/EmptyState';
 
 export const FavoritesVacancies = () => {
   const [favorites, setFavorites] = useState([]);
@@ -32,6 +33,7 @@ export const FavoritesVacancies = () => {
       <Header />
       <div className={s.fvContent}>
         <div className={s.fvList}>
+          {!favorites.length && <EmptyState />}
           <VacanciesList
             vacancies={favorites}
             onStarClick={handleStarClick}

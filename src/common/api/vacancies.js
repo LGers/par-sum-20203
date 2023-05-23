@@ -1,4 +1,5 @@
 import { instance } from './instance';
+import { ITEMS_PER_PAGE } from '../../pages/Vacancies/Vacancies';
 
 export const URL = {
   vacancies: () => '/vacancies/',
@@ -21,6 +22,7 @@ export const getVacancies = ({
     catalogues,
     published: 1,
     no_agreement: 1,
+    count: ITEMS_PER_PAGE,
   }
 });
 
