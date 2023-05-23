@@ -20,6 +20,7 @@ export const getVacancies = ({
     payment_to,
     catalogues,
     published: 1,
+    no_agreement: 1,
   }
 });
 

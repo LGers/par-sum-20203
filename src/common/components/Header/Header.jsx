@@ -4,10 +4,10 @@ import { NavLink } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/img/logo-big.svg';
 import { PATH } from '../../constants/routes.dictionary';
 
-const { SEARCH_VACANCIES, FAVORITES } = PATH;
+const { FAVORITES, MAIN_ROUTE } = PATH;
 
 const NAV_LINKS = [
-  { id: 1, label: 'Поиск Вакансий', link: SEARCH_VACANCIES },
+  { id: 1, label: 'Поиск Вакансий', link: MAIN_ROUTE },
   { id: 2, label: 'Избранное', link: FAVORITES },
 ];
 

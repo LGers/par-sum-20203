@@ -1,6 +1,5 @@
 export const PATH = {
-  SEARCH_VACANCIES: '/search',
-  VACANCIES: '/vacancies',
+  MAIN_ROUTE: '/',
   FAVORITES: '/favorites',
   VACANCY: '/vacancy',
   PAGE_404: '/page404',

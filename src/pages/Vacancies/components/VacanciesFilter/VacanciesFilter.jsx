@@ -10,7 +10,7 @@ import { VACANCIES_FILTER_DICTIONARY } from './VacanciesFilter.dictionary';
 const { FILTERS, RESET_ALL, BUTTON, INDUSTRY, PAYMENT_FROM, PAYMENT_TO }
   = VACANCIES_FILTER_DICTIONARY;
 
-export const VacanciesFilter = ({ industries, setFilter }) => {
+export const VacanciesFilter = ({ industries, setFilter, onReset }) => {
   const handleSubmit = (values) => {
     setFilter((prev) => ({ ...prev, ...values }));
   };
@@ -23,19 +23,28 @@ export const VacanciesFilter = ({ industries, setFilter }) => {
     },
   });
 
+  const handleResetFilters = () => {
+    form.reset();
+    onReset();
+  };
+
   return (
     <Card withBorder radius="md" padding="lg">
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <div className={s.vfTitle}>
-          <label className={s.vfTitlelabel}>{FILTERS}</label>
-          <div className={s.vfTitleReset}>
-            <p>{RESET_ALL}</p>
-            <IconClose />
-          </div>
+          <label className={s.vfTitleLabel}>{FILTERS}</label>
+          <Button unstyled className={s.vfTitleButton} onClick={handleResetFilters}>
+            <div className={s.vfTitleReset}>
+              <p>{RESET_ALL}</p>
+              <IconClose />
+            </div>
+          </Button>
         </div>
         <div className={s.vfFilters}>
           <div>
             <Select
+              labelProps={{ 'data-elem': 'industry-select' }}
+              data-elem={'industry-select'}
               size="md"
               label={INDUSTRY.LABEL}
               placeholder={INDUSTRY.PLACEHOLDER}
@@ -45,12 +54,13 @@ export const VacanciesFilter = ({ industries, setFilter }) => {
               rightSectionWidth={30}
               styles={{ rightSection: { pointerEvents: 'none' } }}
               radius="md"
-              allowDeselect={true}
               {...form.getInputProps(INDUSTRY.NAME)}
+              clearable={true}
             />
           </div>
           <div className={s.vfFiltersPayment}>
             <NumberInput
+              data-elem={'salary-from-input'}
               label={PAYMENT_FROM.LABEL}
               placeholder={PAYMENT_FROM.PLACEHOLDER}
               name={PAYMENT_FROM.NAME}
@@ -60,6 +70,7 @@ export const VacanciesFilter = ({ industries, setFilter }) => {
               {...form.getInputProps(PAYMENT_FROM.NAME)}
             />
             <NumberInput
+              data-elem={'salary-to-input'}
               type="number"
               placeholder={PAYMENT_TO.PLACEHOLDER}
               name={PAYMENT_TO.NAME}
@@ -70,6 +81,7 @@ export const VacanciesFilter = ({ industries, setFilter }) => {
             />
           </div>
           <Button
+            data-elem={'search-button'}
             size="md"
             radius="md"
             styles={{ root: { backgroundColor: '#5e96fc' } }}

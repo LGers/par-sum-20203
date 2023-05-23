@@ -5,7 +5,8 @@ import {
   TextInput,
   Button,
   Pagination,
-  Text
+  Text,
+  Loader,
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { Header } from '../../common/components/Header';
@@ -32,6 +33,12 @@ const getPagesCount = (total, itemPerPage) => {
 };
 
 export const Vacancies = () => {
+  const initialFilterValues = {
+    catalogues: null,
+    paymentFrom: 0,
+    paymentTo: 0,
+  };
+
   const [apiError, setApiError] = useState('');
   const [vacancies, setVacancies] = useState([]);
   const [total, setTotal] = useState(0);
@@ -39,10 +46,10 @@ export const Vacancies = () => {
   const [catalogues, setCatalogues] = useState([]);
   const [filter, setFilter] = useState({
     keyword: '',
-    catalogues: null,
-    paymentFrom: 0,
-    paymentTo: 0,
+    ...initialFilterValues,
   });
+  const [searchString, setSearchString] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchToken() {
@@ -51,6 +58,7 @@ export const Vacancies = () => {
         const { data } = res;
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
+        return res;
       } catch (e) {
 
         setApiError(e.message);
@@ -59,10 +67,13 @@ export const Vacancies = () => {
 
     async function fetchVacancies() {
       try {
+        setIsLoading(true);
         const res = await getVacancies({ page: page - 1, ...filter });
         setVacancies(res.data.objects);
         setTotal(res.data.total);
+        setIsLoading(false);
       } catch (e) {
+        setIsLoading(false);
         setApiError(e.response.data.error.message);
       }
     }
@@ -83,12 +94,29 @@ export const Vacancies = () => {
     const access_token = localStorage.getItem('access_token');
 
     if (!access_token) {
-      fetchToken();
+      fetchToken().then(() => {
+        fetchVacancies();
+        fetchCatalogues();
+      });
+
+      return;
     }
 
     fetchVacancies();
     fetchCatalogues();
   }, [page, filter]);
+
+  const handleResetFilter = () => {
+    setFilter((prev) => ({ ...prev, ...initialFilterValues }));
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchString(e.target.value);
+  };
+
+  const handleFindClick = () => {
+    setFilter((prev) => ({ ...prev, keyword: searchString }));
+  };
 
   return (
     <Wrapper>
@@ -96,16 +124,24 @@ export const Vacancies = () => {
       <div className={s.vacanciesWrapper}>
         <div className={s.vacancies}>
           <aside>
-            <VacanciesFilter industries={catalogues} setFilter={setFilter} />
+            <VacanciesFilter
+              industries={catalogues}
+              setFilter={setFilter}
+              onReset={handleResetFilter}
+            />
           </aside>
           <div className={s.vacanciesContent}>
             <TextInput
+              value={searchString}
+              onChange={handleSearchChange}
+              data-elem={'search-input'}
               icon={<IconSearch size="1.1rem" stroke={1.5} />}
               size="lg"
               radius="md"
               rightSection={
                 <Button
-                  onClick={() => console.log('Find click')}
+                  data-elem="search-button"
+                  onClick={handleFindClick} // todo
                   styles={{ root: { backgroundColor: '#5e96fc' } }}
                   radius="md"
                 >
@@ -116,6 +152,11 @@ export const Vacancies = () => {
               rightSectionWidth={104}
             />
             <div className={s.vacanciesList}>
+              {isLoading &&
+              <div className={s.vacanciesLoader}>
+                <Loader />
+              </div>
+              }
               <VacanciesList vacancies={vacancies} />
             </div>
             <div className={s.vacanciesPagination}>

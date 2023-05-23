@@ -4,13 +4,19 @@
 .header {
   align-items: center;
   background-color: $white;
-  display: grid;
   flex-wrap: wrap;
   grid-template-columns: 3fr 6fr 3fr;
   justify-content: space-between;
-  max-width: $xl-size;
+  max-width: 69.75rem;
   min-height: 5.24rem;
   width: 100%;
+
+  display: flex;
+  margin: 0 0.5rem;
+
+  @media all and (max-width: $md) {
+    flex-direction: column;
+  }
 
   &Wrapper {
     background-color: $white;
@@ -23,14 +29,19 @@
     align-items: center;
     display: flex;
     justify-content: flex-end;
-    margin: 0 3.5rem;
 
-    & svg {
-      width: 100%;
+    @media all and (max-width: $md) {
+      margin: 0.5rem 0 0;
     }
   }
 
   &Links {
+    margin-right: 9rem;
+
+    @media all and (max-width: $md) {
+      margin-right: 0;
+    }
+
     ul {
       align-items: center;
       display: flex;
@@ -43,6 +54,7 @@
 
 .nav {
   &Link {
+    color: $black;
     transition: all 0.05s ease-in-out;
 
     &:hover {

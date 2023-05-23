@@ -54,6 +54,14 @@ export const Vacancy = () => {
       fetchToken();
     }
 
+    if (!access_token) {
+      fetchToken().then(() => {
+        fetchVacancy();
+      });
+
+      return;
+    }
+
     fetchVacancy();
   }, [id]);
 
