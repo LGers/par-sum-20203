@@ -10,9 +10,10 @@ import { VACANCIES_FILTER_DICTIONARY } from './VacanciesFilter.dictionary';
 const { FILTERS, RESET_ALL, BUTTON, INDUSTRY, PAYMENT_FROM, PAYMENT_TO }
   = VACANCIES_FILTER_DICTIONARY;
 
-export const VacanciesFilter = ({ industries, setFilter, onReset }) => {
+export const VacanciesFilter = ({ industries, setFilter, onReset, setPage }) => {
   const handleSubmit = (values) => {
     setFilter((prev) => ({ ...prev, ...values }));
+    setPage();
   };
 
   const form = useForm({
@@ -26,6 +27,7 @@ export const VacanciesFilter = ({ industries, setFilter, onReset }) => {
   const handleResetFilters = () => {
     form.reset();
     onReset();
+    setPage();
   };
 
   return (

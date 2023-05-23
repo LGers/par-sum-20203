@@ -6,7 +6,6 @@ import {
   Button,
   Pagination,
   Text,
-  Loader,
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { Header } from '../../common/components/Header';
@@ -117,7 +116,17 @@ export const Vacancies = () => {
   };
 
   const handleFindClick = () => {
+    setPage(1);
     setFilter((prev) => ({ ...prev, keyword: searchString }));
+  };
+
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleFindClick();
+    } else if (e.key === 'Escape') {
+      setSearchString( '');
+      setFilter((prev) => ({ ...prev, keyword: '' }));
+    }
   };
 
   return (
@@ -130,12 +139,14 @@ export const Vacancies = () => {
               industries={catalogues}
               setFilter={setFilter}
               onReset={handleResetFilter}
+              setPage={() => setPage(1)}
             />
           </aside>
           <div className={s.vacanciesContent}>
             <TextInput
               value={searchString}
               onChange={handleSearchChange}
+              onKeyUp={handleKeyUp}
               data-elem={'search-input'}
               icon={<IconSearch size="1.1rem" stroke={1.5} />}
               size="lg"

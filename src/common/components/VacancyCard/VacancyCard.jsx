@@ -5,20 +5,38 @@ import { ReactComponent as Location } from '../../assets/img/location.svg';
 import { ReactComponent as Star } from '../../assets/img/star.svg';
 import { VACANCY_CARD_DICTIONARY } from './VacancyCard.dictionary';
 
-const { PAYMENT_FROM, PAYMENT_FROM_ZERO } = VACANCY_CARD_DICTIONARY;
+const { PAYMENT_FROM, PAYMENT_TO, PAYMENT, PAYMENT_FROM_ZERO } = VACANCY_CARD_DICTIONARY;
 
 export const VacancyCard = ({ vacancy, isFavorite, onStarClick }) => {
   const {
     profession,
     payment_from,
+    payment_to,
     type_of_work,
     town,
     currency,
   } = vacancy;
 
+  const getPaymentString = () => {
+    if (!payment_from && !payment_to) {
+      return PAYMENT_FROM_ZERO;
+    }
+
+    if (payment_from && !payment_to) {
+      return `${PAYMENT_FROM} ${payment_from} ${currency}`;
+    }
+
+    if (!payment_from && payment_to) {
+      return `${PAYMENT_TO} ${payment_to} ${currency}`;
+    }
+
+    return `${PAYMENT} ${payment_from} - ${payment_to} ${currency}`
+  }
   const handleStarClick = (e, vacancy) => {
     onStarClick && onStarClick(e, vacancy);
   };
+
+  const payment = getPaymentString();
 
   return (
     <Card withBorder radius="md" className={s.vc} padding="xl">
@@ -31,10 +49,7 @@ export const VacancyCard = ({ vacancy, isFavorite, onStarClick }) => {
       </div>
       <div className={s.vcPayment}>
         <p className={s.vcPaymentSalary}>
-          {payment_from
-            ? `${PAYMENT_FROM} ${payment_from} ${currency}`
-            : PAYMENT_FROM_ZERO
-          }
+          {payment}
         </p>
         <p className={s.vcDot}>•</p>
         <p>{type_of_work.title}</p>
