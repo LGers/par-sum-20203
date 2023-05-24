@@ -9,6 +9,7 @@ const { PAYMENT_FROM, PAYMENT_TO, PAYMENT, PAYMENT_FROM_ZERO } = VACANCY_CARD_DI
 
 export const VacancyCard = ({ vacancy, isFavorite, onStarClick }) => {
   const {
+    id,
     profession,
     payment_from,
     payment_to,
@@ -39,7 +40,12 @@ export const VacancyCard = ({ vacancy, isFavorite, onStarClick }) => {
   const payment = getPaymentString();
 
   return (
-    <Card withBorder radius="md" className={s.vc} padding="xl">
+    <Card
+      data-elem={`vacancy-${id}`}
+      withBorder radius="md"
+      className={s.vc}
+      padding="xl"
+    >
       <div className={s.vcHeader}>
         <h3 className={s.vcTitle}>{profession}</h3>
         <Star
