@@ -52,9 +52,9 @@ export const VacanciesFilter = ({ industries, setFilter, onReset, setPage }) => 
               placeholder={INDUSTRY.PLACEHOLDER}
               name={INDUSTRY.NAME}
               data={industries}
-              rightSection={<IconChevronDown size="1rem" color={"#acabd9"} />}
+              rightSection={<IconChevronDown size="2rem" color={"#acabd9"} />}
               rightSectionWidth={30}
-              styles={{ rightSection: { pointerEvents: 'none' } }}
+              styles={{ rightSection: { pointerEvents: 'none', marginRight: '0.5rem' } }}
               radius="md"
               {...form.getInputProps(INDUSTRY.NAME)}
               clearable={true}
