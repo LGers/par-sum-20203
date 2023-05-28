@@ -49,6 +49,7 @@ export const VacancyCard = ({ vacancy, isFavorite, onStarClick }) => {
       <div className={s.vcHeader}>
         <h3 className={s.vcTitle}>{profession}</h3>
         <Star
+          data-elem={`vacancy-${id}-shortlist-button`}
           className={isFavorite ? s.vcStarActive : s.vcStar}
           onClick={handleStarClick}
         />

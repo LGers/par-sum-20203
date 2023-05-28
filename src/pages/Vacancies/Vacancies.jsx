@@ -73,7 +73,6 @@ export const Vacancies = () => {
         setTotal(res.data.total);
         setIsLoading(false);
       } catch (e) {
-        console.log('error', e);
         setIsLoading(false);
         setApiError(e.response.data.error.message);
       }
@@ -108,7 +107,7 @@ export const Vacancies = () => {
   }, [page, filter]);
 
   const handleResetFilter = () => {
-    setFilter((prev) => ({ ...prev, ...initialFilterValues }));
+    setFilter({ keyword: filter.keyword, ...initialFilterValues });
   };
 
   const handleSearchChange = (e) => {
@@ -154,7 +153,7 @@ export const Vacancies = () => {
               rightSection={
                 <Button
                   data-elem="search-button"
-                  onClick={handleFindClick} // todo
+                  onClick={handleFindClick}
                   styles={{ root: { backgroundColor: '#5e96fc' } }}
                   radius="md"
                 >
