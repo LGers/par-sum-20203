@@ -1,0 +1,1 @@
+export { VacancyHeaderCard } from './VacancyHeaderCard';

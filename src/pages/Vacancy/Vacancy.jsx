@@ -3,13 +3,13 @@ import { Header } from '../../common/components/Header';
 import { Button, Card, Dialog, Group, Text } from '@mantine/core';
 import { Wrapper } from '../../common/components/Wrapper';
 import s from './Vacancy.module.scss';
-import { VacancyCard } from '../../common/components/VacancyCard';
 import { useParams } from 'react-router-dom';
 import { VACANCY_DICTIONARY } from './Vacancy.dictionary';
 import { getToken } from '../../common/api/auth';
 import { getVacancy } from '../../common/api/vacancies';
 import parse from 'html-react-parser';
 import { Loading } from '../../common/components/Loading';
+import { VacancyHeaderCard } from '../../common/components/VacancyHeaderCard';
 
 const { ERROR, OK } = VACANCY_DICTIONARY;
 
@@ -80,7 +80,7 @@ export const Vacancy = () => {
       {isLoading && <Loading />}
       {vacancy.id &&
       <div className={s.vacancyContent}>
-        <VacancyCard
+        <VacancyHeaderCard
           vacancy={vacancy}
           isFavorite={isFavorite}
           onStarClick={handleStarClick}
