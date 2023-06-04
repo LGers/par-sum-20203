@@ -10,6 +10,7 @@ import { getVacancy } from '../../common/api/vacancies';
 import parse from 'html-react-parser';
 import { Loading } from '../../common/components/Loading';
 import { VacancyHeaderCard } from '../../common/components/VacancyHeaderCard';
+import { useFavorites } from '../../common/hooks/useFavorites';
 
 const { ERROR, OK } = VACANCY_DICTIONARY;
 
@@ -27,6 +28,8 @@ export const Vacancy = () => {
     vacancyRichText: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     async function fetchToken() {
@@ -69,9 +72,9 @@ export const Vacancy = () => {
     fetchVacancy();
   }, [id]);
 
-  const handleStarClick = (e) => {
-    e.stopPropagation();
+  const handleStarClick = () => {
     setIsFavorite(!isFavorite);
+    toggleFavorite(vacancy);
   };
 
   return (
@@ -82,7 +85,7 @@ export const Vacancy = () => {
       <div className={s.vacancyContent}>
         <VacancyHeaderCard
           vacancy={vacancy}
-          isFavorite={isFavorite}
+          isFavorite={favorites.find((item) => item?.id === vacancy.id)}
           onStarClick={handleStarClick}
         />
         <Card withBorder radius="md" className={s.vacancyDescription} padding="xl">

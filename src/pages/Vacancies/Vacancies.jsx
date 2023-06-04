@@ -19,19 +19,10 @@ import { getCatalogues } from '../../common/api/catalogues';
 import { VacanciesList } from '../../common/components/VacanciesList';
 import { Loading } from '../../common/components/Loading';
 import { EmptyState } from '../../common/components/EmptyState';
+import { getPagesCount } from '../../common/utils';
 
 const { SEARCH, ERROR, OK } = VACANCIES_DICTIONARY;
 export const ITEMS_PER_PAGE = 4;
-
-const getPagesCount = (total, itemPerPage) => {
-  const pages = Math.ceil(total / itemPerPage);
-
-  if (!pages) {
-    return 1;
-  }
-
-  return pages > 125 ? 125 : pages;
-};
 
 export const Vacancies = () => {
   const initialFilterValues = {
@@ -52,6 +43,8 @@ export const Vacancies = () => {
   const [searchString, setSearchString] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const pagesCount = getPagesCount(total, ITEMS_PER_PAGE);
+
   useEffect(() => {
     async function fetchToken() {
       try {
@@ -66,10 +59,12 @@ export const Vacancies = () => {
     }
 
     async function fetchVacancies() {
+      console.log('render');
+
       try {
         setIsLoading(true);
         const res = await getVacancies({ page: page - 1, ...filter });
-        setVacancies(res.data.objects);
+        setVacancies(res?.data?.objects);
         setTotal(res.data.total);
         setIsLoading(false);
       } catch (e) {
@@ -122,9 +117,6 @@ export const Vacancies = () => {
   const handleKeyUp = (e) => {
     if (e.key === 'Enter') {
       handleFindClick();
-    } else if (e.key === 'Escape') {
-      setSearchString( '');
-      setFilter((prev) => ({ ...prev, keyword: '' }));
     }
   };
 
@@ -170,7 +162,7 @@ export const Vacancies = () => {
             </div>
             <div className={s.vacanciesPagination}>
               <Pagination
-                total={getPagesCount(total, ITEMS_PER_PAGE)}
+                total={pagesCount}
                 value={page}
                 onChange={setPage}
               />

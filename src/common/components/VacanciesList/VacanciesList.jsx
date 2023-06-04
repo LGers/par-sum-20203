@@ -3,34 +3,15 @@ import { Link } from 'react-router-dom';
 import { PATH } from '../../constants/routes.dictionary';
 import { VacancyCard } from '../VacancyCard';
 import s from './VacanciesList.module.scss';
+import { useFavorites } from '../../hooks/useFavorites';
 
 export const VacanciesList = ({ vacancies, onStarClick }) => {
-
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    const favoritesVacancies = JSON.parse(localStorage.getItem('favoritesVacancies'));
-
-    Array.isArray(favoritesVacancies)
-      ? setFavorites(favoritesVacancies)
-      : localStorage.setItem('favoritesVacancies', JSON.stringify([]));
-  }, []);
+  const { favorites, toggleFavorite } = useFavorites();
 
   const handleStarClick = (e, vacancy) => {
     e.preventDefault();
-
-    const { id } = vacancy;
-
-    if (favorites.filter((item) => item.id === id).length) {
-      const newFavorites = favorites.filter((item) => item.id !== id);
-      setFavorites(newFavorites);
-      localStorage.setItem('favoritesVacancies', JSON.stringify([...newFavorites]));
-    } else {
-      setFavorites([vacancy, ...favorites]);
-      localStorage.setItem('favoritesVacancies', JSON.stringify([vacancy, ...favorites]));
-    }
-
-    onStarClick && onStarClick(e, vacancy);
+    toggleFavorite(vacancy);
+    onStarClick && onStarClick(vacancy);
   };
 
   const vacanciesList = vacancies.map((item) => {

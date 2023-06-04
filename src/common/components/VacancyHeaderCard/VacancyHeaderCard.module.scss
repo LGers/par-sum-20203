@@ -22,6 +22,8 @@
   }
 
   &Star {
+    cursor: pointer;
+
     &:hover {
       transform: scale(1.5);
 
@@ -33,6 +35,8 @@
   }
 
   &StarActive {
+    cursor: pointer;
+
     path {
       fill: $blue-500-main;
       stroke: $blue-500-main;

@@ -3,41 +3,21 @@ import { Card } from '@mantine/core';
 import s from './VacancyHeaderCard.module.scss';
 import { ReactComponent as Location } from '../../assets/img/location.svg';
 import { ReactComponent as Star } from '../../assets/img/star.svg';
-import { VACANCY_CARD_DICTIONARY } from './VacancyHeaderCard.dictionary';
-
-const { PAYMENT_FROM, PAYMENT_TO, PAYMENT, PAYMENT_FROM_ZERO } = VACANCY_CARD_DICTIONARY;
+import { getPaymentString } from '../../utils';
 
 export const VacancyHeaderCard = ({ vacancy, isFavorite, onStarClick }) => {
   const {
     id,
     profession,
-    payment_from,
-    payment_to,
     type_of_work,
     town,
-    currency,
   } = vacancy;
 
-  const getPaymentString = () => {
-    if (!payment_from && !payment_to) {
-      return PAYMENT_FROM_ZERO;
-    }
-
-    if (payment_from && !payment_to) {
-      return `${PAYMENT_FROM} ${payment_from} ${currency}`;
-    }
-
-    if (!payment_from && payment_to) {
-      return `${PAYMENT_TO} ${payment_to} ${currency}`;
-    }
-
-    return `${PAYMENT} ${payment_from} - ${payment_to} ${currency}`
-  }
-  const handleStarClick = (e, vacancy) => {
-    onStarClick && onStarClick(e, vacancy);
+  const handleStarClick = () => {
+    onStarClick && onStarClick(vacancy);
   };
 
-  const payment = getPaymentString();
+  const payment = getPaymentString(vacancy);
 
   return (
     <Card
